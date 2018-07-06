@@ -201,7 +201,7 @@ PACKS="
   json:elzr/vim-json
   json5:GutenYe/json5.vim
   jst:briancollins/vim-jst
-  jsx:mxw/vim-jsx:_ALL
+  jsx:chemzqm/vim-jsx-improve
   julia:JuliaEditorSupport/julia-vim
   kotlin:udalov/kotlin-vim
   latex:LaTeX-Box-Team/LaTeX-Box
