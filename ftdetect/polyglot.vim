@@ -442,23 +442,17 @@ endif
 if !exists('g:polyglot_disabled') || index(g:polyglot_disabled, 'javascript') == -1
   augroup filetypedetect
   " javascript, from javascript.vim in pangloss/vim-javascript:_JAVASCRIPT
-au BufNewFile,BufRead *.{js,mjs,jsm,es,es6},Jakefile setf javascript
-
-fun! s:SourceFlowSyntax()
-  if !exists('javascript_plugin_flow') && !exists('b:flow_active') &&
-        \ search('\v\C%^\_s*%(//\s*|/\*[ \t\n*]*)\@flow>','nw')
-    runtime extras/flow.vim
-    let b:flow_active = 1
-  endif
-endfun
-au FileType javascript au BufRead,BufWritePost <buffer> call s:SourceFlowSyntax()
-
 fun! s:SelectJavascript()
   if getline(1) =~# '^#!.*/bin/\%(env\s\+\)\?node\>'
     set ft=javascript
   endif
 endfun
-au BufNewFile,BufRead * call s:SelectJavascript()
+
+augroup javascript_syntax_detection
+  autocmd!
+  autocmd BufNewFile,BufRead *.{js,mjs,jsm,es,es6},Jakefile setfiletype javascript
+  autocmd BufNewFile,BufRead * call s:SelectJavascript()
+augroup END
   augroup end
 endif
 
@@ -499,49 +493,6 @@ au BufNewFile,BufRead *.jst set filetype=jst
 au BufNewFile,BufRead *.djs set filetype=jst
 au BufNewFile,BufRead *.hamljs set filetype=jst
 au BufNewFile,BufRead *.ect set filetype=jst
-  augroup end
-endif
-
-if !exists('g:polyglot_disabled') || index(g:polyglot_disabled, 'jsx') == -1
-  augroup filetypedetect
-  " jsx, from javascript.vim in mxw/vim-jsx:_ALL
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim ftdetect file
-"
-" Language: JSX (JavaScript)
-" Maintainer: Max Wang <mxawng@gmail.com>
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Whether the .jsx extension is required.
-if !exists('g:jsx_ext_required')
-  let g:jsx_ext_required = 0
-endif
-
-" Whether the @jsx pragma is required.
-if !exists('g:jsx_pragma_required')
-  let g:jsx_pragma_required = 0
-endif
-
-let s:jsx_pragma_pattern = '\%^\_s*\/\*\*\%(\_.\%(\*\/\)\@!\)*@jsx\_.\{-}\*\/'
-
-" Whether to set the JSX filetype on *.js files.
-fu! <SID>EnableJSX()
-  if g:jsx_pragma_required && !exists('b:jsx_ext_found')
-    " Look for the @jsx pragma.  It must be included in a docblock comment
-    " before anything else in the file (except whitespace).
-    let b:jsx_pragma_found = search(s:jsx_pragma_pattern, 'npw')
-  endif
-
-  if g:jsx_pragma_required && !b:jsx_pragma_found | return 0 | endif
-  if g:jsx_ext_required && !exists('b:jsx_ext_found') | return 0 | endif
-  return 1
-endfu
-
-autocmd BufNewFile,BufRead *.jsx let b:jsx_ext_found = 1
-autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
-autocmd BufNewFile,BufRead *.js
-  \ if <SID>EnableJSX() | set filetype=javascript.jsx | endif
   augroup end
 endif
 
@@ -951,6 +902,9 @@ if !exists('g:polyglot_disabled') || index(g:polyglot_disabled, 'rust') == -1
   augroup filetypedetect
   " rust, from rust.vim in rust-lang/rust.vim
 au BufRead,BufNewFile *.rs set filetype=rust
+au BufRead,BufNewFile Cargo.toml if &filetype == "" | set filetype=cfg | endif
+
+" vim: set et sw=4 sts=4 ts=8:
   augroup end
 endif
 

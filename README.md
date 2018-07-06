@@ -92,7 +92,7 @@ If you need full functionality of any plugin, please use it directly with your p
 - [json5](https://github.com/GutenYe/json5.vim) (syntax)
 - [json](https://github.com/elzr/vim-json) (syntax, indent, ftplugin)
 - [jst](https://github.com/briancollins/vim-jst) (syntax, indent)
-- [jsx](https://github.com/mxw/vim-jsx) (after)
+- [jsx](https://github.com/chemzqm/vim-jsx-improve) (syntax, indent, ftplugin)
 - [julia](https://github.com/JuliaEditorSupport/julia-vim) (syntax, indent, autoload, ftplugin)
 - [kotlin](https://github.com/udalov/kotlin-vim) (syntax, indent)
 - [latex](https://github.com/LaTeX-Box-Team/LaTeX-Box) (syntax, indent, ftplugin)
